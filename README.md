@@ -1,3 +1,3 @@
-# ActionSSHTest
+# OpenCV_wsl_CUDA_actions
 
-Test action config
+Hello github actions
