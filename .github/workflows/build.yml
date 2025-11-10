@@ -1,41 +1,28 @@
-name: ActionSSHTest
+name: Build actions
 on:
   repository_dispatch:
   workflow_dispatch:
     inputs:
-      ssh:
-        description: '通过SSH连接Github Actions'
-        required: false
-        default: false
-        type: boolean
       debug:
         description: 'Debug Github Actions'
         required: false
         default: false
         type: boolean
-
+env:
+  OPENCV_REPO_URL: https://github.com/kkstone/immortalwrt-ipq50xx
 jobs:
   build:
     runs-on: ubuntu-22.04
     steps:
     - name: Checkout
       uses: actions/checkout@main
-      
-    - name: 退出Action
-      if: ${{ inputs.debug == true }}
-      run: |
-        exit 1
-    
-    - name: Enable SSH
-      if: ${{ inputs.ssh == true }}
-      run: |
-        echo "SSH on!"
 
-    - name: Disable SSH
-      if: ${{ inputs.ssh == false }}
+    - name: Free Disk Space (Ubuntu)
+      uses: jlumbroso/free-disk-space@v1.3.1
+
+    - name: Upgrade apt
+      uses: |
+        sudo apt update && sudo apt upgrade
+    - name: Clone Opencv repository
       run: |
-        cat /proc/cpuinfo
-        if [ ${{ inputs.debug }} == "false" ]; then
-          echo 退出
-        fi
-        echo "SSH off!"
+        git clone $OPENCV_REPO_URL
