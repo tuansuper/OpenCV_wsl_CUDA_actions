@@ -3,8 +3,8 @@ on:
   repository_dispatch:
   workflow_dispatch:
     inputs:
-      debug:
-        description: 'Debug Github Actions'
+      free:
+        description: 'Free Disk Space'
         required: false
         default: false
         type: boolean
@@ -16,6 +16,7 @@ jobs:
       uses: actions/checkout@main
 
     - name: Free Disk Space (Ubuntu)
+      if: ${{ inputs.free == true }}
       uses: jlumbroso/free-disk-space@v1.3.1
 
     - name: Install Dependencies
