@@ -39,7 +39,6 @@ jobs:
     
     - name: Install cuDNN
       run: |
-        sudo apt-get -y install cudnn9-cuda-12
         wget https://developer.download.nvidia.com/compute/cudnn/9.15.0/local_installers/cudnn-local-repo-ubuntu2204-9.15.0_1.0-1_amd64.deb
         sudo dpkg -i cudnn-local-repo-ubuntu2204-9.15.0_1.0-1_amd64.deb
         sudo cp /var/cudnn-local-repo-ubuntu2204-9.15.0/cudnn-*-keyring.gpg /usr/share/keyrings/
