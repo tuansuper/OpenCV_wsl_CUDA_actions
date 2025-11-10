@@ -30,40 +30,13 @@ jobs:
     - name: Download file if not cached
       if: steps.file-cache.outputs.cache-hit != 'true'
       run: |
-        wget --quiet https://developer.download.nvidia.com/compute/cuda/12.5.0/local_installers/cuda-repo-ubuntu2204-12-5-local_12.5.0-555.42.02-1_amd64.deb
-        wget --quiet https://developer.download.nvidia.com/compute/cudnn/9.15.0/local_installers/cudnn-local-repo-ubuntu2204-9.15.0_1.0-1_amd64.deb
+        wget -P ~/cuda --quiet https://developer.download.nvidia.com/compute/cuda/12.5.0/local_installers/cuda-repo-ubuntu2204-12-5-local_12.5.0-555.42.02-1_amd64.deb
+        wget -P ~/cuda --quiet https://developer.download.nvidia.com/compute/cudnn/9.15.0/local_installers/cudnn-local-repo-ubuntu2204-9.15.0_1.0-1_amd64.deb
     
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
         name: cached-file
-        path: cached-file.txt
+        path: ~/cuda
         save-always: true
 
-  use-job:
-    name: Use Cached File
-    runs-on: ubuntu-latest
-    needs: build-job  # 依赖于 build-job
-    
-    steps:
-    - name: Download artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: cached-file
-        
-    - name: Use the file
-      run: |
-        echo "Contents of the cached file:"
-        cat cached-file.txt
-        echo "File size:"
-        ls -la cached-file.txt
-        
-    - name: Process file content
-      run: |
-        # 这里可以添加处理文件内容的逻辑
-        if grep -q "cached" cached-file.txt; then
-          echo "File contains expected content"
-        else
-          echo "File content validation failed"
-          exit 1
-        fi
